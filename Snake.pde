@@ -10,10 +10,11 @@ void settings() {
 
 void setup() {
   frameRate(10);
-  setFoodLocation();
+  changeFoodLocation();
 }
 
 void draw() {
+  // draw the bg, the food and the snake
   background(50);
   
   fill(200,50,50);
@@ -25,7 +26,7 @@ void draw() {
 }
 
 // get random location on the grid
-void setFoodLocation() {
+void changeFoodLocation() {
   int randX = (int) Math.floor(height/grid*Math.random());
   int randY = (int) Math.floor(height/grid*Math.random());
   food = new PVector(randX * grid, randY*grid);
@@ -86,10 +87,11 @@ class Snake {
     if (this.head.y > height) this.head.y = 0;
     if (this.head.y < 0) this.head.y = height;
     
+    // check if the snake hits itself
     this.gameover();
   }
   
-  // TODO: check if the snake hits itself
+  // if the head hits one of the items in the tail remove everything
   void gameover() {
     for (int i = 0; i < this.tail.size() - 1; i++) {
       PVector p = this.tail.get(i);
@@ -112,8 +114,7 @@ class Snake {
   void eat(PVector food) {
     if (dist(this.head.x, this.head.y, food.x, food.y) < 1) {
       this.tail.add(0, new PVector(this.head.x + xv*grid, this.head.y + yv*grid));
-      // global method
-      setFoodLocation();
+      changeFoodLocation();
     }
   }
   
